@@ -293,21 +293,25 @@
 
   <script>
     // Autofill summary
-    document.getElementById("jobTitle").addEventListener("blur", function () {
-      const title = this.value.toLowerCase();
-      const summary = document.getElementById("summary");
-      if (summary.value.trim() === "") {
-        if (title.includes("cleaner")) {
-          summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service.";
-        } else if (title.includes("teacher")) {
-          summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.";
-        } else if (title) {
-          summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environments.`;
-        } else {
-          summary.value = "A reliable and goal-driven individual with excellent teamwork and communication skills, seeking opportunities to contribute and grow.";
+    function setupAutoFillSummary() {
+      const jobTitleInput = document.getElementById("jobTitle");
+      jobTitleInput.addEventListener("blur", function () {
+        const title = this.value.toLowerCase();
+        const summary = document.getElementById("summary");
+        if (summary.value.trim() === "") {
+          if (title.includes("cleaner")) {
+            summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service.";
+          } else if (title.includes("teacher")) {
+            summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.";
+          } else if (title) {
+            summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environments.`;
+          } else {
+            summary.value = "A reliable and goal-driven individual with excellent teamwork and communication skills, seeking opportunities to contribute and grow.";
+          }
         }
-      }
-    });
+      });
+    }
+    setupAutoFillSummary();
 
     // Autofill qualification based on level
     function autoFillQual(select) {
@@ -397,7 +401,7 @@
     }
 
 
-    //  functions to handle form submission and CV generation
+    // New functions to handle form submission and CV generation
     function generateCV() {
       // Get all form data
       const first_name = document.getElementById('first_name').value;
@@ -433,7 +437,7 @@
       schoolInputs.forEach((input, index) => {
           const level = document.querySelectorAll('select[name="level[]"]')[index].value;
           const qualification = document.querySelectorAll('input[name="qualification[]"]')[index].value;
-          const year = document.querySelectorAll('input[name="year[]']')[index].value;
+          const year = document.querySelectorAll('input[name="year[]"]')[index].value;
 
           if (input.value) {
               educationContainer.insertAdjacentHTML('beforeend', `
@@ -489,7 +493,7 @@
       document.getElementById('cv-output').style.display = 'none';
     }
 
-    // New function for normal PDF download
+    // Function for normal PDF download
     function downloadCV() {
       const element = document.getElementById('cv-output');
       const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
@@ -502,7 +506,7 @@
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      //  .save() method to trigger a normal download
+      // Use the .save() method to trigger a normal download
       html2pdf().set(opt).from(element).save();
     }
   </script>
