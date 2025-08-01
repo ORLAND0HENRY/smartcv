@@ -295,21 +295,23 @@
     // Autofill summary
     function setupAutoFillSummary() {
       const jobTitleInput = document.getElementById("jobTitle");
-      jobTitleInput.addEventListener("blur", function () {
-        const title = this.value.toLowerCase();
-        const summary = document.getElementById("summary");
-        if (summary.value.trim() === "") {
-          if (title.includes("cleaner")) {
-            summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service.";
-          } else if (title.includes("teacher")) {
-            summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.";
-          } else if (title) {
-            summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environments.`;
-          } else {
-            summary.value = "A reliable and goal-driven individual with excellent teamwork and communication skills, seeking opportunities to contribute and grow.";
+      if (jobTitleInput) {
+        jobTitleInput.addEventListener("blur", function () {
+          const title = this.value.toLowerCase();
+          const summary = document.getElementById("summary");
+          if (summary.value.trim() === "") {
+            if (title.includes("cleaner")) {
+              summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service.";
+            } else if (title.includes("teacher")) {
+              summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.";
+            } else if (title) {
+              summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environments.`;
+            } else {
+              summary.value = "A reliable and goal-driven individual with excellent teamwork and communication skills, seeking opportunities to contribute and grow.";
+            }
           }
-        }
-      });
+        });
+      }
     }
     setupAutoFillSummary();
 
@@ -493,7 +495,7 @@
       document.getElementById('cv-output').style.display = 'none';
     }
 
-    // Function for normal PDF download
+    // New function for a more reliable PDF download
     function downloadCV() {
       const element = document.getElementById('cv-output');
       const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
