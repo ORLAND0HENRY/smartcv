@@ -241,39 +241,41 @@
     </form>
   </div>
 
-  <div id="cv-output" class="cv-box">
-    <h2 id="cv-name"></h2>
+  <div id="cv-output">
+    <div class="cv-box">
+      <h2 id="cv-name"></h2>
 
-    <div class="section personal-info">
-      <p><strong>Email:</strong> <span id="cv-email"></span></p>
-      <p><strong>Phone:</strong> <span id="cv-phone"></span></p>
-      <p><strong>Address:</strong> <span id="cv-address"></span></p>
-      <p id="cv-linkedin-p"><strong>LinkedIn:</strong> <span id="cv-linkedin"></span></p>
-    </div>
+      <div class="section personal-info">
+        <p><strong>Email:</strong> <span id="cv-email"></span></p>
+        <p><strong>Phone:</strong> <span id="cv-phone"></span></p>
+        <p><strong>Address:</strong> <span id="cv-address"></span></p>
+        <p id="cv-linkedin-p"><strong>LinkedIn:</strong> <span id="cv-linkedin"></span></p>
+      </div>
 
-    <div class="section">
-      <h3>Professional Summary</h3>
-      <p id="cv-summary"></p>
-    </div>
+      <div class="section">
+        <h3>Professional Summary</h3>
+        <p id="cv-summary"></p>
+      </div>
 
-    <div class="section">
-      <h3>Skills</h3>
-      <p id="cv-skills"></p>
-    </div>
+      <div class="section">
+        <h3>Skills</h3>
+        <p id="cv-skills"></p>
+      </div>
 
-    <div class="section">
-      <h3>Education</h3>
-      <div id="cv-education"></div>
-    </div>
+      <div class="section">
+        <h3>Education</h3>
+        <div id="cv-education"></div>
+      </div>
 
-    <div class="section">
-      <h3>Work Experience</h3>
-      <div id="cv-experience"></div>
-    </div>
+      <div class="section">
+        <h3>Work Experience</h3>
+        <div id="cv-experience"></div>
+      </div>
 
-    <div class="section">
-      <h3>Referees</h3>
-      <div id="cv-referees"></div>
+      <div class="section">
+        <h3>Referees</h3>
+        <div id="cv-referees"></div>
+      </div>
     </div>
     
     <div class="html2pdf-ignore" style="text-align: center;">
@@ -497,7 +499,8 @@
 
     // New function for a more reliable PDF download
     function downloadCV() {
-      const element = document.getElementById('cv-output');
+      // We only want the cv-box content, not the buttons or the footer
+      const element = document.querySelector('.cv-box');
       const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
       
       const opt = {
