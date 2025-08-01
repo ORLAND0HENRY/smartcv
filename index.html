@@ -67,21 +67,21 @@
     /* Mobile Responsiveness (adjusts to keep a two-column layout) */
     @media (max-width: 768px) {
       .row {
-        flex-direction: row; /* Maintains the two-column layout */
-        flex-wrap: wrap; /* Allows items to wrap if needed */
+        flex-direction: row;
+        flex-wrap: wrap;
       }
       .row input, .row select, .row textarea {
-        flex: 1 1 45%; /* Ensures a two-column layout */
+        flex: 1 1 45%;
       }
     }
     @media (max-width: 480px) {
         .row input, .row select, .row textarea {
-            flex: 1 1 100%; /* Stacks on very small screens */
+            flex: 1 1 100%;
         }
     }
     /* CV Display Styles */
     #cv-output {
-        display: none; /* Initially hidden */
+        display: none;
     }
     .cv-box {
       max-width: 850px;
@@ -291,7 +291,7 @@
   </div>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script>
     // Autofill summary
@@ -491,17 +491,21 @@
       document.getElementById('cv-output').style.display = 'none';
     }
 
-    // New function for mobile-friendly PDF download
+    // mobile-friendly PDF download
     function downloadCV() {
       const element = document.getElementById('cv-output');
       const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
-      html2pdf(element, {
+      
+      const opt = {
         margin: 10,
         filename: filename,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      });
+      };
+
+      
+      html2pdf().set(opt).from(element).output('dataurlnewwindow');
     }
   </script>
 </body>
