@@ -64,17 +64,25 @@
     .action-btn:hover {
       background-color: #0052a3;
     }
+    /* Mobile Responsiveness (adjusts to keep a two-column layout) */
     @media (max-width: 768px) {
       .row {
-        flex-direction: column;
+        flex-direction: row; /* Maintains the two-column layout */
+        flex-wrap: wrap; /* Allows items to wrap if needed */
+      }
+      .row input, .row select, .row textarea {
+        flex: 1 1 45%; /* Ensures a two-column layout */
       }
     }
-
+    @media (max-width: 480px) {
+        .row input, .row select, .row textarea {
+            flex: 1 1 100%; /* Stacks on very small screens */
+        }
+    }
     /* CV Display Styles */
     #cv-output {
         display: none; /* Initially hidden */
     }
-
     .cv-box {
       max-width: 850px;
       margin: auto;
@@ -83,13 +91,11 @@
       border-radius: 10px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     }
-
     .cv-box h2 {
       text-align: center;
       color: #0052a3;
       margin-bottom: 5px;
     }
-
     .cv-box h3 {
       color: #333;
       border-bottom: 1px solid #ddd;
@@ -97,29 +103,23 @@
       margin-top: 30px;
       margin-bottom: 15px;
     }
-
     .cv-box .section p {
       margin: 8px 0;
     }
-
     .cv-box .personal-info p {
       margin: 6px 0;
     }
-
     .education-entry {
       margin-bottom: 20px;
       padding-left: 5px;
     }
-
     .responsibility-list {
       margin-top: 5px;
       padding-left: 20px;
     }
-
     .responsibility-list li {
       margin-bottom: 5px;
     }
-
     .download-btn, .back-btn {
       margin: 30px 5px 0;
       background: linear-gradient(135deg, #007bff, #0052a3);
@@ -134,35 +134,36 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.15);
       transition: background 0.3s ease;
     }
-
     .download-btn:hover, .back-btn:hover {
       background: linear-gradient(135deg, #0052a3, #003b80);
     }
-    
     .back-btn {
         background: #6c757d;
     }
-
     .back-btn:hover {
         background: #5a6268;
     }
-
+    /* Hide buttons when printing */
     @media print {
       .download-btn, .back-btn {
         display: none !important;
       }
     }
-
     .footer {
       text-align: center;
       margin-top: 40px;
       font-size: 13px;
       color: #999;
     }
+    .goodbye-message {
+        text-align: center;
+        margin-top: 30px;
+        font-style: italic;
+        color: #666;
+    }
   </style>
 </head>
 <body>
-
   <div id="form-container" class="container">
     <h2>Smart CV Generator</h2>
     <form id="cv-form" onsubmit="event.preventDefault(); generateCV();">
@@ -279,14 +280,18 @@
 
     <div style="text-align: center;">
       <button class="back-btn" onclick="showForm()">← Back to Form</button>
-      <button class="download-btn" onclick="window.print()">📄 Download as PDF</button>
+      <button class="download-btn" onclick="downloadCV()">⬇️ Download CV</button>
     </div>
+
+    <p class="goodbye-message">Thanks for using Orlando's Smart CV Generator!</p>
 
     <div class="footer">
       © OrlantechInnovations. All rights Reserved.
     </div>
   </div>
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
   <script>
     // Autofill summary
@@ -387,7 +392,7 @@
       } else if (position.includes("shop") || position.includes("attendant")) {
         responsibilities = "• Assisting customers \n• Managing stock levels\n• Handling cash and Mpesa transactions\n• Keeping the shop clean and tidy at all times";
       } else {
-        responsibilities = "• [Describe your key responsibilities here]";
+        responsibilities = "Manually enter responsibilities here.";
       }
 
       respField.value = responsibilities;
@@ -486,6 +491,18 @@
       document.getElementById('cv-output').style.display = 'none';
     }
 
+    // New function for mobile-friendly PDF download
+    function downloadCV() {
+      const element = document.getElementById('cv-output');
+      const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
+      html2pdf(element, {
+        margin: 10,
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      });
+    }
   </script>
 </body>
 </html>
