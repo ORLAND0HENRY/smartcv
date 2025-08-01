@@ -143,11 +143,9 @@
     .back-btn:hover {
         background: #5a6268;
     }
-    /* Hide buttons when printing */
-    @media print {
-      .download-btn, .back-btn {
-        display: none !important;
-      }
+    /* Hide elements from the PDF */
+    .html2pdf-ignore {
+      display: none;
     }
     .footer {
       text-align: center;
@@ -277,15 +275,15 @@
       <h3>Referees</h3>
       <div id="cv-referees"></div>
     </div>
-
-    <div style="text-align: center;">
+    
+    <div class="html2pdf-ignore" style="text-align: center;">
       <button class="back-btn" onclick="showForm()">← Back to Form</button>
       <button class="download-btn" onclick="downloadCV()">⬇️ Download CV</button>
     </div>
 
-    <p class="goodbye-message">Thanks for using Orlando's Smart CV Generator!</p>
+    <p class="goodbye-message html2pdf-ignore">Thanks for using Orlando's Smart CV Generator!</p>
 
-    <div class="footer">
+    <div class="footer html2pdf-ignore">
       © OrlantechInnovations. All rights Reserved.
     </div>
   </div>
@@ -399,7 +397,7 @@
     }
 
 
-    // New functions to handle form submission and CV generation
+    //  functions to handle form submission and CV generation
     function generateCV() {
       // Get all form data
       const first_name = document.getElementById('first_name').value;
@@ -435,7 +433,7 @@
       schoolInputs.forEach((input, index) => {
           const level = document.querySelectorAll('select[name="level[]"]')[index].value;
           const qualification = document.querySelectorAll('input[name="qualification[]"]')[index].value;
-          const year = document.querySelectorAll('input[name="year[]"]')[index].value;
+          const year = document.querySelectorAll('input[name="year[]']')[index].value;
 
           if (input.value) {
               educationContainer.insertAdjacentHTML('beforeend', `
@@ -491,7 +489,7 @@
       document.getElementById('cv-output').style.display = 'none';
     }
 
-    // mobile-friendly PDF download
+    // New function for normal PDF download
     function downloadCV() {
       const element = document.getElementById('cv-output');
       const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
@@ -504,8 +502,8 @@
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      
-      html2pdf().set(opt).from(element).output('dataurlnewwindow');
+      //  .save() method to trigger a normal download
+      html2pdf().set(opt).from(element).save();
     }
   </script>
 </body>
