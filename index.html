@@ -278,14 +278,14 @@
       </div>
     </div>
     
-    <div class="html2pdf-ignore" style="text-align: center;">
+    <div style="text-align: center;">
       <button class="back-btn" onclick="showForm()">← Back to Form</button>
       <button class="download-btn" onclick="downloadCV()">⬇️ Download CV</button>
     </div>
 
-    <p class="goodbye-message html2pdf-ignore">Thanks for using Orlando's Smart CV Generator!</p>
+    <p class="goodbye-message">Thanks for using Orlando's Smart CV Generator!</p>
 
-    <div class="footer html2pdf-ignore">
+    <div class="footer">
       © OrlantechInnovations. All rights Reserved.
     </div>
   </div>
@@ -497,9 +497,9 @@
       document.getElementById('cv-output').style.display = 'none';
     }
 
-    // New function for a more reliable PDF download
+    // Function for a more reliable PDF download
     function downloadCV() {
-      // We only want the cv-box content, not the buttons or the footer
+      // The element we want to convert is the cv-box
       const element = document.querySelector('.cv-box');
       const filename = document.getElementById('first_name').value + '_' + document.getElementById('last_name').value + '_CV.pdf';
       
