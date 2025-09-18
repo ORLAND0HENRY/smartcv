@@ -226,7 +226,7 @@
       </div>
 
       <div class="row">
-        <input type="text" name="job_title" id="jobTitle" placeholder="Current Job Title" required>
+        <input type="text" name="job_title" id="jobTitle" placeholder="Current/previous Job Title" required>
         <input type="text" name="skills" id="skills" placeholder="Skills (Auto-filled with common skills)" required>
       </div>
 
@@ -349,17 +349,17 @@
       const summary = document.getElementById("summary");
       if (summary.value.trim() === "") {
         if (title.includes("cleaner")) {
-          summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service.";
+          summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service. I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments. ";
         } else if (title.includes("teacher")) {
-          summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.";
+          summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
         } else if (title.includes("manager")) {
-          summary.value = "A highly organized and results-driven manager with a proven track record of leading teams and optimizing operations.";
+          summary.value = "A highly organized and results-driven manager with a proven track record of leading teams and optimizing operations.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
         } else if (title.includes("accountant")) {
-          summary.value = "A detail-oriented accountant with expertise in financial reporting, budget management, and compliance.";
+          summary.value = "A detail-oriented accountant with expertise in financial reporting, budget management, and compliance.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
         } else if (title.includes("software developer")) {
-          summary.value = "A skilled software developer with a passion for creating innovative and efficient applications.";
+          summary.value = "A skilled software developer with a passion for creating innovative and efficient applications.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
         } else {
-          summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environments.`;
+          summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environment. I am committed to adding value through efficiency ,creativity and integrity with a record of delivering high quality work in fast-paced environments. I have strong ability to adapt and learn quickly and excellently skilled in collaboration and problem-solving.`;
         }
       }
     });
