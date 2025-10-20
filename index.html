@@ -1,584 +1,1059 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Smart CV Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #e9ecef;
-      padding: 20px;
-      color: #495057;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: #fff;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #212529;
-      font-weight: 700;
-    }
-    .row {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-    .row input, .row select, .row textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ced4da;
-      border-radius: 8px;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      font-size: 16px;
-    }
-    .row input:focus, .row select:focus, .row textarea:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-      outline: none;
-    }
-    .section {
-      margin-bottom: 30px;
-    }
-    .add-btn, .fill-btn, .action-btn {
-      background-color: #28a745;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 15px;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-    }
-    .fill-btn {
-      background-color: #ffc107;
-      margin-left: auto;
-      display: block;
-    }
-    .action-btn {
-      background: linear-gradient(45deg, #0066cc, #004d99);
-      color: white;
-      padding: 15px 25px;
-      border: none;
-      border-radius: 8px;
-      width: 100%;
-      box-sizing: border-box;
-      font-weight: 500;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(0, 77, 153, 0.2);
-    }
-    .action-btn:hover {
-      background: linear-gradient(45deg, #004d99, #003b80);
-      box-shadow: 0 6px 20px rgba(0, 77, 153, 0.3);
-    }
-    @media (max-width: 768px) {
-      .row {
-        flex-direction: column;
-      }
-      .container {
-        padding: 20px;
-      }
-    }
-
-    /* CV Display Styles */
-    #cv-output {
-        display: none; /* Initially hidden */
-    }
-
-    .cv-box {
-      max-width: 850px;
-      margin: auto;
-      background: #fff;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-
-    .cv-box h2 {
-      text-align: center;
-      color: #0052a3;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-    }
-
-    .cv-box h3 {
-      color: #333;
-      padding-bottom: 5px;
-      margin-top: 30px;
-      margin-bottom: 15px;
-    }
-
-    .cv-box .section p {
-      margin: 8px 0;
-    }
-
-    .cv-box .personal-info p {
-      margin: 6px 0;
-    }
-
-    .education-entry {
-      margin-bottom: 20px;
-      padding-left: 5px;
-    }
-
-    .responsibility-list {
-      margin-top: 5px;
-      padding-left: 20px;
-    }
-
-    .responsibility-list li {
-      margin-bottom: 5px;
-    }
-
-    .download-btn, .back-btn {
-      margin: 30px 5px 0;
-      background: linear-gradient(135deg, #007bff, #0052a3);
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 13px;
-      display: inline-block;
-      text-align: center;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-      transition: background 0.3s ease;
-    }
-
-    .download-btn:hover, .back-btn:hover {
-      background: linear-gradient(135deg, #0052a3, #003b80);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refined Smart CV Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    .back-btn {
-        background: #6c757d;
-    }
+    <style>
+        /* BASE STYLES & LAYOUT */
+        :root {
+            --color-primary: #1a4d7c; /* Deep Professional Blue */
+            --color-secondary: #343a40; /* Darker Gray */
+            --color-light-gray: #f8f9fa; /* Very Light Gray */
+            --color-medium-gray: #dee2e6; /* Medium Light Gray */
+            --color-white: #ffffff;
+            --font-family-sans: 'Inter', sans-serif;
+            --font-family-serif: 'Lora', serif; /* Elegant Serif for names/titles */
+            --shadow-subtle: 0 6px 16px rgba(0, 0, 0, 0.08);
+            --border-radius-large: 12px;
+            --border-radius-small: 6px;
+        }
 
-    .back-btn:hover {
-        background: #5a6268;
-    }
+        body {
+            font-family: var(--font-family-sans);
+            background-color: var(--color-light-gray);
+            color: var(--color-secondary);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
 
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 13px;
-      color: #999;
-    }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            background: var(--color-white);
+            padding: 40px;
+            border-radius: var(--border-radius-large);
+            box-shadow: var(--shadow-subtle);
+            box-sizing: border-box;
+            transition: opacity 0.4s ease;
+        }
 
-    /* Print-specific styles for A4 */
-    @media print {
-      body {
-        background-color: #fff;
-      }
-      .container, .cv-box {
-        width: 21cm; /* A4 width */
-        height: 29.7cm; /* A4 height */
-        margin: 0;
-        padding: 2cm; /* Set print margins */
-        box-shadow: none;
-        border-radius: 0;
-      }
-      .download-btn, .back-btn {
-        display: none !important;
-      }
-      h2, h3, p, li {
-        color: #000;
-      }
-      /* Ensure everything fits on the page */
-      .cv-box {
-        box-sizing: border-box;
-      }
-      .section {
-        margin-bottom: 20px;
-      }
-    }
-  </style>
+        /* TYPOGRAPHY & HEADINGS (Form) */
+        h1 {
+            font-family: var(--font-family-serif);
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--color-secondary);
+            border-bottom: 3px solid var(--color-medium-gray);
+            padding-bottom: 5px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* FORM ELEMENTS */
+        .input-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #343a40;
+        }
+
+        input:not([type="checkbox"]), select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--border-radius-small);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(26, 77, 124, 0.15);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* DYNAMIC FIELD SETS */
+        .dynamic-fields {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--border-radius-small);
+            background-color: #fcfcfc;
+            position: relative;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #dc3545;
+            color: var(--color-white);
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 25px;
+            padding: 0;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .remove-btn:hover {
+            opacity: 1;
+        }
+
+        /* BUTTONS */
+        .action-button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .add-btn, .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            white-space: nowrap;
+        }
+        
+        .add-btn {
+            background-color: #6c757d;
+            color: var(--color-white);
+            font-size: 0.95rem;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        /* CV OUTPUT STYLES (Professional Left-Aligned Template) */
+        #cv-output {
+            display: none;
+            padding: 0;
+            box-shadow: none;
+        }
+        
+        .cv-document {
+            padding: 40px;
+            background: var(--color-white);
+            box-shadow: var(--shadow-subtle);
+            min-height: 297mm; /* Simulate A4 height */
+            max-width: 210mm; /* Simulate A4 width */
+            margin: 0 auto;
+            border-radius: var(--border-radius-small);
+            box-sizing: border-box;
+            font-size: 16px; /* Slightly larger base font for A4 readability */
+            line-height: 1.6;
+        }
+        
+        /* --- CV Name/Title Alignment --- */
+        .cv-document h1 {
+            font-family: var(--font-family-serif);
+            font-size: 3.4rem;
+            margin-bottom: 8px;
+            text-align: left; /* LEFT ALIGN */
+            color: var(--color-secondary);
+        }
+        
+        .cv-document .cv-job-title {
+            color: var(--color-primary);
+            font-size: 1.3rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 500;
+            text-align: left; /* LEFT ALIGN */
+        }
+
+        .cv-document h3 {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--color-medium-gray);
+            padding-bottom: 5px;
+        }
+        
+        .cv-document h3 i {
+            margin-right: 8px;
+            color: #5a8fb3;
+        }
+
+        /* --- Personal Info Alignment (Vertical & Left) --- */
+        .cv-document .personal-info {
+            display: block; 
+            gap: 10px 30px;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            padding-bottom: 15px;
+            text-align: left; /* LEFT ALIGN */
+            border-bottom: 2px solid var(--color-medium-gray);
+        }
+        
+        .cv-document .personal-info span {
+            display: block; 
+            align-items: center;
+            gap: 5px;
+            line-height: 1.8; 
+            text-align: left; /* Ensure alignment inside span */
+        }
+        
+        .cv-document .personal-info i {
+            color: var(--color-primary);
+            margin-right: 5px;
+        }
+        /* --- End Personal Info Alignment --- */
+
+
+        .cv-document .summary-text, .cv-document .hobbies-text {
+            line-height: 1.6;
+            margin-bottom: 10px;
+            text-align: left; /* Ensure text alignment */
+        }
+
+        .cv-document .skills-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            text-align: left;
+        }
+        
+        .cv-document .skills-list li {
+            background: #e9f5ff;
+            color: var(--color-primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--color-primary);
+        }
+
+        .cv-document .responsibility-list {
+            padding-left: 20px;
+            margin-top: 5px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Experience entry formatting: company + years on single line, position beneath, then duties heading + list */
+        .experience-entry {
+            margin-bottom: 14px;
+        }
+
+        .experience-entry .company-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .experience-entry .position {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-top: 4px;
+        }
+
+        .experience-entry .duration {
+            margin-top: 4px;
+            font-size: 0.98rem;
+            color: var(--color-secondary);
+        }
+
+        .experience-entry .duties-heading {
+            margin-top: 8px;
+            margin-bottom: 6px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+
+        /* Education entry formatting: school + year on single line, qualification beneath */
+        .education-entry {
+            margin-bottom: 12px;
+        }
+
+        .education-entry .school-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .education-entry .qualification {
+            font-size: 0.98rem;
+            color: var(--color-secondary);
+            margin-top: 4px;
+            margin-left: 2px;
+        }
+
+        .education-entry .year-completed {
+            margin-top: 6px;
+            margin-left: 2px;
+            font-size: 0.98rem;
+            color: var(--color-secondary);
+        }
+        
+        .footer-text {
+            text-align: left; /* LEFT ALIGN */
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #adb5bd;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .input-group {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: none !important;
+                padding: 0 !important;
+            }
+
+            #cv-form-container, .cv-actions {
+                display: none !important;
+            }
+
+            #cv-output {
+                display: block !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            }
+            
+            .cv-document {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 20mm !important; /* Set A4 print margins */
+                min-height: 277mm !important;
+                width: 180mm !important;
+                max-width: 180mm !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <div id="form-container" class="container">
-    <h2>Smart CV Generator</h2>
+<div id="cv-form-container" class="container">
+    <h1>ORLANTECH SMART CV🌟</h1>
+    
     <form id="cv-form" onsubmit="event.preventDefault(); generateCV();">
-      <div class="row">
-        <input type="text" name="first_name" id="first_name" placeholder="First Name" required>
-        <input type="text" name="last_name" id="last_name" placeholder="Last Name" required>
-      </div>
-
-      <div class="row">
-        <input type="text" name="gender" id="gender" placeholder="Gender" required>
-        <input type="text" name="status" id="status" placeholder="Marital Status" required>
-      </div>
-
-      <div class="row">
-        <input type="email" name="email" id="email" placeholder="Email" required>
-        <input type="text" name="phone" id="phone" placeholder="Phone Number" required>
-      </div>
-
-      <div class="row">
-        <input type="text" name="address" id="address" placeholder="Physical Address">
-        <input type="text" name="linkedin" id="linkedin" placeholder="LinkedIn (Optional)">
-      </div>
-
-      <div class="row">
-        <input type="text" name="job_title" id="jobTitle" placeholder="Current/previous Job Title" required>
-        <input type="text" name="skills" id="skills" placeholder="Skills (Auto-filled with common skills)" required>
-      </div>
-
-      <div class="row">
-        <textarea name="summary" id="summary" rows="3" placeholder="Professional Summary (Auto-filled)"></textarea>
-      </div>
-
-      <div class="section">
-        <label><strong>Education</strong></label>
-        <div id="educationFields">
-          <div class="row education-entry-fields">
-            <input type="text" name="school[]" placeholder="School Name" required>
-            <select name="level[]" onchange="autoFillQual(this)">
-              <option value="">Select Level</option>
-              <option value="Primary">Primary</option>
-              <option value="High School">High School</option>
-              <option value="College">College</option>
-              <option value="University">University</option>
-            </select>
-          </div>
-          <div class="row">
-            <input type="text" name="qualification[]" placeholder="Qualification( Auto-filled )" class="qual">
-            <input type="text" name="year[]" placeholder="Year Completed">
-          </div>
+        
+        <h2>Personal Information</h2>
+        
+        <div class="input-group">
+            <div class="form-field"><label for="first_name">First Name</label><input type="text" name="first_name" id="first_name" required></div>
+            <div class="form-field"><label for="last_name">Last Name</label><input type="text" name="last_name" id="last_name" required></div>
         </div>
-        <button type="button" class="add-btn" onclick="addEducation()">+ Add More Education</button>
-      </div>
 
-      <div class="section">
-        <label><strong>Work Experience</strong></label>
+        <div class="input-group">
+            <div class="form-field"><label for="job_title">Job Title</label><input type="text" name="job_title" id="jobTitle" required></div>
+        </div>
+
+        <div class="input-group">
+            <div class="form-field"><label for="email">Email</label><input type="email" name="email" id="email" required></div>
+            <div class="form-field"><label for="phone">Phone Number</label><input type="tel" name="phone" id="phone" required></div>
+        </div>
+        
+        <div class="input-group">
+            <div class="form-field"><label for="address">Physical Address</label><input type="text" name="address" id="address"></div>
+            <div class="form-field"><label for="linkedin">LinkedIn (Optional)</label><input type="url" name="linkedin" id="linkedin" placeholder="e.g., https://linkedin.com/in/..."></div>
+        </div>
+
+        <div class="input-group">
+            <div class="form-field"><label for="dob">Date of Birth</label><input type="date" name="dob" id="dob"></div>
+            <div class="form-field"><label for="nationality">Nationality</label><input type="text" name="nationality" id="nationality"></div>
+        </div>
+
+        <div class="input-group">
+            <div class="form-field"><label for="id_number">ID Number (Optional)</label><input type="text" name="id_number" id="id_number"></div>
+            <div class="form-field"><label for="gender">Gender</label><input type="text" name="gender" id="gender"></div>
+        </div>
+
+        <div class="input-group">
+            <div class="form-field">
+                <label for="summary">**Professional Summary**</label>
+                <textarea name="summary" id="summary" rows="4" placeholder="Briefly summarize your experience and goals. Auto-fills based on Job Title." onfocus="autoFillSummary()"></textarea>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <div class="form-field"><label for="skills">Key Skills (Comma Separated)</label><textarea name="skills" id="skills" rows="2" placeholder="e.g., Teamwork, Python, Financial Analysis, Project Management"></textarea></div>
+        </div>
+        
+        <div class="input-group">
+            <div class="form-field">
+                <label for="hobbies">Hobbies (Optional)</label>
+                <textarea name="hobbies" id="hobbies" rows="2" placeholder="e.g., Reading tech blogs, Hiking, Photography" onfocus="autoFillHobbies()"></textarea>
+            </div>
+        </div>
+        
+        
+        <h2>Work Experience</h2>
         <div id="experienceFields">
-          <div class="row experience-entry-fields">
-            <input type="text" name="company[]" placeholder="Company/Place Worked">
-            <input type="text" name="position[]" placeholder="Position/Role" class="position-input">
-          </div>
-          <div class="row">
-            <textarea name="responsibilities[]" placeholder="Main Responsibilities (one per line). For positions not listed, enter manually." class="responsibility-field" rows="3"></textarea>
-            <input type="text" name="exp_year[]" placeholder="Year Completed " required>
-          </div>
-          <button type="button" class="fill-btn" onclick="autoFillResponsibility(this)">Auto-fill Responsibilities</button>
+            <div class="dynamic-fields">
+                <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                <div class="input-group">
+                    <div class="form-field"><label>Company</label><input type="text" name="company[]" placeholder="Company Name"></div>
+                    <div class="form-field"><label>Position</label><input type="text" name="position[]" placeholder="Position/Role" class="position-input"></div>
+                </div>
+                <div class="input-group">
+                    <div class="form-field"><label>Start Year</label><input type="text" name="exp_start_year[]" placeholder="e.g., 2018" required></div>
+                    <div class="form-field"><label>End Year (or Present)</label><input type="text" name="exp_end_year[]" placeholder="e.g., 2022 or Present" required></div>
+                </div>
+                <div class="form-field">
+                    <label>Main Responsibilities (One per line)</label>
+                    <textarea name="responsibilities[]" placeholder="Use bullet points, one responsibility per line." class="responsibility-field" rows="4"></textarea>
+                    <button type="button" class="autofill-btn" onclick="autoFillResponsibility(this)">Auto-fill</button>
+                </div>
+            </div>
         </div>
-        <button type="button" class="add-btn" onclick="addExperience()">+ Add More Experience</button>
-      </div>
+        <button type="button" class="add-btn" onclick="addExperience()">+ Add Experience</button>
+        
+        <h2>Education</h2>
+        <div id="educationFields">
+            <div class="dynamic-fields">
+                <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                <div class="input-group">
+                    <div class="form-field"><label>School Name</label><input type="text" name="school[]" placeholder="School/Institution Name" required></div>
+                    <div class="form-field"><label>**Level**</label>
+                        <select name="level[]" class="level-select" onchange="autoFillQualification(this)">
+                            <option value="">Select Level</option>
+                            <option value="High School">High School</option>
+                            <option value="College">College</option>
+                            <option value="University">University</option>
+                            <option value="Vocational">Vocational</option>
+                            <option value="Primary">Primary</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="form-field"><label>**Qualification (Auto-fills)**</label><input type="text" name="qualification[]" placeholder="Qualification/Course Name" class="qualification-input"></div>
+                    <div class="form-field"><label>Year Completed</label><input type="text" name="year[]" placeholder="e.g., 2023"></div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
+        
+        <h2>Certifications (Optional)</h2>
+        <div id="certificationFields">
+            <div class="dynamic-fields">
+                <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                <div class="input-group">
+                    <div class="form-field"><label>Certificate Name</label><input type="text" name="cert_name[]" placeholder="e.g., Google Project Management"></div>
+                    <div class="form-field"><label>Issuing Organization</label><input type="text" name="cert_org[]" placeholder="e.g., Coursera/Google"></div>
+                </div>
+                <div class="input-group">
+                    <div class="form-field"><label>Year Achieved</label><input type="text" name="cert_year[]" placeholder="e.g., 2024"></div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addCertification()">+ Add Certification</button>
 
-      <div class="section">
-        <label><strong>Referees</strong></label>
+        <h2>Referees</h2>
         <div id="refereeFields">
-          <div class="row referee-entry-fields">
-            <input type="text" name="referee_name[]" placeholder="Referee Name">
-            <input type="text" name="referee_contact[]" placeholder="Referee Contact">
-          </div>
+            <div class="dynamic-fields">
+                <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                <div class="input-group">
+                    <div class="form-field"><label>Referee Name</label><input type="text" name="referee_name[]" placeholder="Referee Name"></div>
+                    <div class="form-field"><label>Referee Contact</label><input type="text" name="referee_contact[]" placeholder="Email or Phone"></div>
+                </div>
+            </div>
         </div>
-        <button type="button" class="add-btn" onclick="addReferee()">+ Add More Referees</button>
-      </div>
-
-      <button type="submit" class="action-btn">Generate CV</button>
+        <button type="button" class="add-btn" onclick="addReferee()">+ Add Referee</button>
+        
+        <div class="action-button-group">
+            <button type="button" class="action-btn clear-btn" onclick="clearAllData()">Clear All</button>
+            <button type="submit" class="action-btn"><i class="fas fa-magic"></i> Generate CV</button>
+        </div>
     </form>
-  </div>
+</div>
 
-  <div id="cv-output" class="cv-box">
-    <h2 id="cv-name"></h2>
+<div id="cv-output" class="container">
+    <div id="cv-document" class="cv-document">
+        </div>
 
-    <div class="section personal-info">
-      <p><strong>Email:</strong> <span id="cv-email"></span></p>
-      <p><strong>Phone:</strong> <span id="cv-phone"></span></p>
-      <p><strong>Address:</strong> <span id="cv-address"></span></p>
-      <p><strong>Gender: </strong> <span id="cv-gender"></span></p>
-      <p><strong>Marital Status: </strong><span id="cv-status"></span></p>
-      <p id="cv-linkedin-p"><strong>LinkedIn:</strong> <span id="cv-linkedin"></span></p>
+    <div class="cv-actions">
+        <button class="cv-action-btn back" onclick="showForm()"><i class="fas fa-arrow-left"></i> Back to Form</button>
+        <button class="cv-action-btn" onclick="window.print()"><i class="fas fa-file-pdf"></i> Download as PDF</button>
     </div>
+</div>
 
-    <div class="section">
-      <h3>Professional Summary</h3>
-      <p id="cv-summary"></p>
-    </div>
-
-    <div class="section">
-      <h3>Skills</h3>
-      <p id="cv-skills"></p>
-    </div>
-
-    <div class="section">
-      <h3>Education</h3>
-      <div id="cv-education"></div>
-    </div>
-
-    <div class="section">
-      <h3>Work Experience</h3>
-      <div id="cv-experience"></div>
-    </div>
-
-    <div class="section">
-      <h3>Referees</h3>
-      <div id="cv-referees"></div>
-    </div>
-
-    <div style="text-align: center;">
-      <button class="back-btn" onclick="showForm()">← Back to Form</button>
-      <button class="download-btn" onclick="window.print()">📄 Download as PDF</button>
-    </div>
-
-    <div class="footer">
-      © OrlantechInnovations. All rights Reserved.
-    </div>
-  </div>
-
-
-  <script>
-    // Autofill skills on page load
-    window.onload = function() {
-        const skillsField = document.getElementById("skills");
-        if (skillsField.value.trim() === "") {
-            skillsField.value = "Teamwork, Communication, Problem-solving, Time management, Adaptability, Basic computer skills";
-        }
+<script>
+    // --- GLOBAL DATA AND CONFIGURATION ---
+    const AUTOFILL_RESPONSIBILITIES = {
+        'cleaner': "• Sweeping and mopping floors\n• Disposing trash daily\n• Sanitizing surfaces\n• Restocking cleaning supplies",
+        'waiter': "• Taking customer orders\n• Serving food and drinks\n• Cleaning tables and dining surfaces\n• Handling payments and using POS systems",
+        'receptionist': "• Receiving and directing guests\n• Answering and transferring multi-line phone calls\n• Scheduling appointments and managing calendars\n• Managing front desk operations and mail",
+        'manager': "• Led and supervised a team to exceed operational targets\n• Developed and implemented operational strategies to improve efficiency\n• Managed budgets, procurement, and optimized resource allocation\n• Conducted performance reviews and staff training/mentorship",
+        'accountant': "• Prepared accurate monthly financial statements and reports\n• Managed accounts payable/receivable, general ledger, and payroll\n• Ensured strict compliance with tax laws and financial regulations\n• Conducted internal audits and reconciled all major accounts",
+        'developer': "• Wrote, tested, and maintained high-quality, scalable code (e.g., Python/JS)\n• Collaborated with cross-functional teams using Agile methodologies\n• Designed and implemented features for major software applications\n• Debugged and troubleshot production issues promptly and effectively",
+        'marketing': "• Developed and executed multi-channel digital marketing campaigns\n• Managed social media presence, content creation, and SEO efforts\n• Conducted detailed market research and competitor analysis\n• Analyzed campaign performance using tools like Google Analytics and reported ROI",
+        'customer service': "• Responded promptly and professionally to customer inquiries via phone/email/chat\n• Resolved complex complaints and issues with a focus on satisfaction and retention\n• Maintained detailed records of customer interactions in the CRM system\n• Provided expert product/service information and technical support effectively",
+        'administrator': "• Maintained office efficiency by organizing procedures and systems\n• Managed confidential filing systems and ensured data security\n• Coordinated internal meetings, minute taking, and follow-up actions\n• Managed office supply inventory and vendor relations",
+    };
+    
+    const AUTOFILL_EDUCATION = {
+        'High School': 'Attained a KCSE Certificate',
+        'Primary': 'Attained a KCPE Certificate',
+        'College': 'Attained a College Certificate',
+        'University': "Attained a Bachelor's Degree",
+        'Vocational': 'Attained a Trade Certificate',
     };
 
-    // Autofill summary
-    document.getElementById("jobTitle").addEventListener("blur", function () {
-      const title = this.value.toLowerCase();
-      const summary = document.getElementById("summary");
-      if (summary.value.trim() === "") {
-        if (title.includes("cleaner")) {
-          summary.value = "A hardworking and dependable cleaner with experience in maintaining hygienic environments and delivering quality service. I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments. ";
-        } else if (title.includes("teacher")) {
-          summary.value = "An experienced and dedicated teacher committed to inspiring students and delivering impactful education.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
-        } else if (title.includes("manager")) {
-          summary.value = "A highly organized and results-driven manager with a proven track record of leading teams and optimizing operations.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
-        } else if (title.includes("accountant")) {
-          summary.value = "A detail-oriented accountant with expertise in financial reporting, budget management, and compliance.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
-        } else if (title.includes("software developer")) {
-          summary.value = "A skilled software developer with a passion for creating innovative and efficient applications.I am commited to adding value through effeciency, creativity and integrity with a record of delivering high quality work in fast-paced environments.";
-        } else {
-          summary.value = `A dedicated and skilled ${this.value} with a proven ability to contribute effectively in fast-paced environment. I am committed to adding value through efficiency ,creativity and integrity with a record of delivering high quality work in fast-paced environments. I have strong ability to adapt and learn quickly and excellently skilled in collaboration and problem-solving.`;
+    const AUTOFILL_HOBBIES = "Reading Industry News, Hiking, Volunteering, Personal Coding Projects, Foreign Languages, Fitness";
+    const DEFAULT_SKILLS = "Teamwork, Communication, Problem-solving, Time management, Adaptability, MS Office";
+    const CV_FORM = document.getElementById('cv-form');
+
+    // --- UTILITY FUNCTIONS ---
+
+    function toTitleCase(str) {
+        if (!str) return '';
+        // Handles hyphens and multiple spaces better
+        return str.toLowerCase().split(' ').map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ').split('-').map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join('-');
+    }
+
+    function getFormDataAsObject() {
+        const formData = new FormData(CV_FORM);
+        const data = {};
+        for (const [key, value] of formData.entries()) {
+            if (key.endsWith('[]')) {
+                const baseKey = key.slice(0, -2);
+                if (!data[baseKey]) data[baseKey] = [];
+                data[baseKey].push(value);
+            } else {
+                data[key] = value;
+            }
         }
-      }
-    });
+        
+        // Ensure arrays are initialized even if empty for iteration
+        ['company', 'position', 'exp_start_year', 'exp_end_year', 'responsibilities', 'school', 'level', 'qualification', 'year', 'cert_name', 'cert_org', 'cert_year', 'referee_name', 'referee_contact'].forEach(key => {
+            if (!data[key]) data[key] = [''];
+        });
 
-    // Autofill qualification based on level
-    function autoFillQual(select) {
-      const value = select.value;
-      const qualInput = select.closest('.row').nextElementSibling.querySelector('.qual');
-      if (value === "Primary") {
-        qualInput.value = "Kenya Certificate of Primary Education";
-      } else if (value === "High School") {
-        qualInput.value = "Attained Kenya Certificate of Secondary Education";
-      } else if (value === "College") {
-        qualInput.value = "Attained Diploma Certificate";
-      } else if (value === "University") {
-        qualInput.value = "Attained A Bachelors Degree";
-      } else {
-        qualInput.value = "";
-      }
+        return data;
     }
 
-    // Add education
-    function addEducation() {
-      const container = document.getElementById("educationFields");
-      container.insertAdjacentHTML('beforeend', `
-        <div class="row education-entry-fields">
-          <input type="text" name="school[]" placeholder="School Name" required>
-          <select name="level[]" onchange="autoFillQual(this)">
-            <option value="">Select Level</option>
-            <option value="Primary">Primary</option>
-            <option value="High School">High School</option>
-            <option value="College">College</option>
-            <option value="University">University</option>
-          </select>
-        </div>
-        <div class="row">
-          <input type="text" name="qualification[]" placeholder="Qualification" class="qual">
-          <input type="text" name="year[]" placeholder="Year Completed">
-        </div>
-      `);
+    // --- LOCAL STORAGE HANDLER ---
+    
+    function saveToLocalStorage() {
+        const data = getFormDataAsObject();
+        localStorage.setItem('smartCvData', JSON.stringify(data));
     }
 
-    // Add experience
-    function addExperience() {
-      const container = document.getElementById("experienceFields");
-      container.insertAdjacentHTML('beforeend', `
-        <div class="row experience-entry-fields">
-          <input type="text" name="company[]" placeholder="Company/Place Worked">
-          <input type="text" name="position[]" placeholder="Position/Role" class="position-input">
-        </div>
-        <div class="row">
-          <textarea name="responsibilities[]" placeholder="Main Responsibilities (one per line)" class="responsibility-field" rows="3"></textarea>
-          <input type="text" name="exp_year[]" placeholder="Year Completed">
-        </div>
-        <button type="button" class="fill-btn" onclick="autoFillResponsibility(this)">Auto-fill Responsibilities</button>
-      `);
+    function loadFromLocalStorage() {
+        const storedData = localStorage.getItem('smartCvData');
+        if (!storedData) return;
+
+        const data = JSON.parse(storedData);
+        
+        // Load simple fields
+        Object.keys(data).forEach(key => {
+            const element = document.getElementById(key);
+            if (element) {
+                element.value = data[key];
+            }
+        });
+        
+        // Load dynamic arrays
+        ['experience', 'education', 'referee', 'certification'].forEach(section => {
+            const container = document.getElementById(section + 'Fields');
+            const fieldKey = section === 'experience' ? 'company' : 
+                             section === 'education' ? 'school' : 
+                             section === 'referee' ? 'referee_name' : 'cert_name'; 
+            
+            if (data[fieldKey] && data[fieldKey].length > 0) {
+                const defaultFields = container.querySelectorAll('.dynamic-fields');
+                
+                if (data[fieldKey].length > 1 || (data[fieldKey].length === 1 && data[fieldKey][0] !== "")) {
+                    defaultFields.forEach(field => field.remove());
+                    
+                    const count = data[fieldKey].length;
+                    for (let i = 0; i < count; i++) {
+                        const addFunction = window['add' + toTitleCase(section)];
+                        if (addFunction) addFunction(false);
+                    }
+                }
+                
+                const fieldSets = container.querySelectorAll('.dynamic-fields');
+                fieldSets.forEach((fieldSet, setIndex) => {
+                    fieldSet.querySelectorAll('input, select, textarea').forEach(input => {
+                        const name = input.name.slice(0, -2);
+                        if (data[name] && data[name].length > setIndex) {
+                            input.value = data[name][setIndex];
+                        }
+                    });
+                });
+            }
+        });
+
+        autofillMissingFields();
     }
 
-    // Add referee
-    function addReferee() {
-      const container = document.getElementById("refereeFields");
-      container.insertAdjacentHTML('beforeend', `
-        <div class="row referee-entry-fields">
-          <input type="text" name="referee_name[]" placeholder="Referee Name">
-          <input type="text" name="referee_contact[]" placeholder="Referee Contact">
-        </div>
-      `);
+
+    // --- AUTOFILL LOGIC ---
+
+    function autoFillSummary() {
+        const jobTitle = document.getElementById("jobTitle").value;
+        const title = jobTitle.toLowerCase().trim();
+        const summaryField = document.getElementById("summary");
+        
+        if (summaryField.value.trim() === "") {
+            let summaryText = `A dedicated and results-oriented **${toTitleCase(jobTitle) || 'professional'}** with a proven ability to contribute effectively in a dynamic work environment. I am committed to adding value through efficiency, creativity, and integrity, with a solid track record of delivering high-quality outcomes.`;
+            
+            for (const keyword in AUTOFILL_RESPONSIBILITIES) {
+                if (title.includes(keyword)) {
+                    summaryText = `A highly proficient **${toTitleCase(jobTitle)}** with proven expertise in ${keyword}-related operations. Possessing strong leadership/organizational skills and committed to driving success and continuous improvement in all tasks.`;
+                    break;
+                }
+            }
+            summaryField.value = summaryText;
+            saveToLocalStorage();
+        }
+    }
+    
+    function autoFillHobbies() {
+        const hobbiesField = document.getElementById("hobbies");
+        if (hobbiesField.value.trim() === "") {
+            hobbiesField.value = AUTOFILL_HOBBIES;
+            saveToLocalStorage();
+        }
     }
 
-    // Auto-fill responsibilities based on position
+    function autoFillQualification(levelSelect) {
+        const level = levelSelect.value;
+        const fieldSet = levelSelect.closest('.dynamic-fields');
+        const qualificationInput = fieldSet.querySelector('.qualification-input');
+        
+        qualificationInput.value = AUTOFILL_EDUCATION[level] || '';
+        saveToLocalStorage();
+    }
+    
     function autoFillResponsibility(btn) {
-      const section = btn.previousElementSibling.previousElementSibling;
-      const position = section.querySelector('.position-input').value.toLowerCase();
-      const respField = section.nextElementSibling.querySelector('.responsibility-field');
+        const fieldSet = btn.closest('.dynamic-fields');
+        const positionInput = fieldSet.querySelector('.position-input');
+        const respField = fieldSet.querySelector('.responsibility-field');
+        
+        const position = positionInput.value.toLowerCase();
+        let responsibilities = '';
+        
+        let bestMatch = '';
+        for (const keyword in AUTOFILL_RESPONSIBILITIES) {
+            if (position.includes(keyword)) {
+                bestMatch = keyword;
+                break;
+            }
+        }
 
-      let responsibilities = '';
-      if (position.includes("cleaner")) {
-        responsibilities = "• Sweeping and mopping floors\n• Disposing trash daily\n• Sanitizing surfaces\n• Restocking cleaning supplies";
-      } else if (position.includes("waiter")) {
-        responsibilities = "• Taking customer orders\n• Serving food and drinks\n• Cleaning tables and dining surfaces\n• Handling payments";
-      } else if (position.includes("receptionist")) {
-        responsibilities = "• Receiving guests\n• Answering phone calls\n• Scheduling appointments\n• Managing front desk operations";
-      } else if (position.includes("shop") || position.includes("attendant")) {
-        responsibilities = "• Assisting customers \n• Managing stock levels\n• Handling cash and Mpesa transactions\n• Keeping the shop clean and tidy at all times";
-      } else if (position.includes("manager")) {
-        responsibilities = "• Leading and supervising a team\n• Developing and implementing operational strategies\n• Managing budgets and resources\n• Analyzing data to improve efficiency";
-      } else if (position.includes("accountant")) {
-        responsibilities = "• Preparing financial statements and reports\n• Managing accounts payable and receivable\n• Conducting audits and ensuring compliance\n• Handling payroll and tax returns";
-      } else if (position.includes("software developer")) {
-        responsibilities = "• Writing and testing code\n• Developing and maintaining software applications\n• Collaborating with cross-functional teams\n• Debugging and troubleshooting issues";
-      } else if (position.includes("marketing officer")) {
-        responsibilities = "• Developing and executing marketing campaigns\n• Managing social media platforms\n• Conducting market research\n• Analyzing campaign performance and ROI";
-      } else if (position.includes("data entry clerk")) {
-        responsibilities = "• Entering data into databases accurately and efficiently\n• Verifying and correcting data errors\n• Maintaining data confidentiality and security\n• Generating basic reports from data";
-      } else if (position.includes("human resources officer")) {
-        responsibilities = "• Managing employee records and personnel files\n• Assisting with recruitment and onboarding processes\n• Handling employee inquiries and grievances\n• Ensuring compliance with labor laws and regulations";
-      } else if (position.includes("customer service representative")) {
-        responsibilities = "• Responding to customer inquiries via phone, email, or chat\n• Resolving customer complaints and issues promptly\n• Providing product or service information\n• Maintaining a high level of customer satisfaction";
-      } else if (position.includes("bank teller")) {
-        responsibilities = "• Processing customer transactions accurately\n• Verifying customer identities and account information\n• Reconciling cash drawers at the end of the day\n• Promoting bank products and services to customers";
-      } else if (position.includes("chef")) {
-        responsibilities = "• Preparing and cooking food according to recipes\n• Managing kitchen inventory and ordering supplies\n• Ensuring compliance with food safety and hygiene standards\n• Creating new menu items and culinary concepts";
-      } else if (position.includes("driver")) {
-        responsibilities = "• Transporting goods or people safely and on time\n• Maintaining vehicle cleanliness and basic maintenance\n• Adhering to all traffic laws and regulations\n• Recording trip details and mileage accurately";
-      } else if (position.includes("security guard")) {
-        responsibilities = "• Patrolling premises to prevent unauthorized access\n• Monitoring surveillance equipment\n• Responding to alarms and emergency situations\n• Writing daily reports on activities and incidents";
-      } else if (position.includes("research assistant")) {
-        responsibilities = "• Collecting and analyzing data for research projects\n• Conducting literature reviews and summarizing findings\n• Assisting in the preparation of reports and presentations\n• Organizing and maintaining research files and databases";
-      } else if (position.includes("librarian")) {
-        responsibilities = "• Managing library resources and collections\n• Assisting patrons with research and information needs\n• Organizing and cataloging new materials\n• Planning and hosting community programs or events";
-      } else if (position.includes("journalist")) {
-        responsibilities = "• Researching and writing news stories and articles\n• Conducting interviews with sources\n• Verifying the accuracy of information\n• Meeting strict deadlines for publications";
-      } else if (position.includes("social worker")) {
-        responsibilities = "• Providing counseling and support to individuals and families\n• Developing and implementing treatment plans\n• Connecting clients with community resources\n• Maintaining case files and documentation";
-      } else {
-        responsibilities = "• [Describe your key responsibilities here]";
-      }
-
-      respField.value = responsibilities;
+        responsibilities = AUTOFILL_RESPONSIBILITIES[bestMatch] || "• Achieved [specific result or metric]\n• Managed projects from conception to completion\n• Optimized processes, resulting in [time/cost] savings";
+        
+        respField.value = responsibilities;
+        saveToLocalStorage();
+    }
+    
+    function autofillMissingFields() {
+        const skillsField = document.getElementById("skills");
+        if (!skillsField.value.trim()) {
+            skillsField.value = DEFAULT_SKILLS;
+        }
+        autoFillSummary();
+        autoFillHobbies();
     }
 
 
-    // New functions to handle form submission and CV generation
-    function generateCV() {
-      // Get all form data
-      const first_name = document.getElementById('first_name').value;
-      const last_name = document.getElementById('last_name').value;
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const gender=document.getElementById('gender').value;
-      const status=document.getElementById('status').value;
-      const address = document.getElementById('address').value;
-      const linkedin = document.getElementById('linkedin').value;
-      const skills = document.getElementById('skills').value;
-      const summary = document.getElementById('summary').value;
-
-      // Update personal info section with uppercase names
-      document.getElementById('cv-name').textContent = `${first_name.toUpperCase()} ${last_name.toUpperCase()}`;
-      document.getElementById('cv-email').textContent = email;
-      document.getElementById('cv-phone').textContent = phone;
-      document.getElementById('cv-gender').textContent = gender.charAt(0).toUpperCase() + gender.slice(1).toLowerCase();
-      document.getElementById('cv-status').textContent = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-      document.getElementById('cv-address').textContent = address;
-
-
-      const linkedin_el = document.getElementById('cv-linkedin-p');
-      if (linkedin) {
-          document.getElementById('cv-linkedin').textContent = linkedin;
-          linkedin_el.style.display = 'block';
-      } else {
-          linkedin_el.style.display = 'none';
-      }
-
-      document.getElementById('cv-summary').textContent = summary;
-      document.getElementById('cv-skills').textContent = skills;
-
-      // Update Education Section
-      const educationContainer = document.getElementById('cv-education');
-      educationContainer.innerHTML = ''; // Clear previous content
-      const schoolInputs = document.querySelectorAll('input[name="school[]"]');
-      schoolInputs.forEach((input, index) => {
-          const level = document.querySelectorAll('select[name="level[]"]')[index].value;
-          const qualification = document.querySelectorAll('input[name="qualification[]"]')[index].value;
-          const year = document.querySelectorAll('input[name="year[]"]')[index].value;
-
-          if (input.value) {
-              educationContainer.insertAdjacentHTML('beforeend', `
-                <div style="margin-bottom: 20px;">
-                  <p><strong>${input.value} – ${level}</strong></p>
-                  <p><strong>Year Completed:</strong> ${year}</p>
-                  <p><strong>Qualification:</strong> ${qualification}</p>
+    // --- DYNAMIC FIELD MANAGEMENT ---
+    
+    function createDynamicFieldHTML(type) {
+        // ... (HTML structure remains the same as previous step for forms)
+        let html = '';
+        if (type === 'experience') {
+            html = `
+                <div class="dynamic-fields">
+                    <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                    <div class="input-group">
+                        <div class="form-field"><label>Company</label><input type="text" name="company[]" placeholder="Company Name"></div>
+                        <div class="form-field"><label>Position</label><input type="text" name="position[]" placeholder="Position/Role" class="position-input"></div>
+                    </div>
+                    <div class="input-group">
+                        <div class="form-field"><label>Start Year</label><input type="text" name="exp_start_year[]" placeholder="e.g., 2018" required></div>
+                        <div class="form-field"><label>End Year (or Present)</label><input type="text" name="exp_end_year[]" placeholder="e.g., 2022 or Present" required></div>
+                    </div>
+                    <div class="form-field">
+                        <label>Main Responsibilities (One per line)</label>
+                        <textarea name="responsibilities[]" placeholder="Use bullet points, one responsibility per line." class="responsibility-field" rows="4"></textarea>
+                        <button type="button" class="autofill-btn" onclick="autoFillResponsibility(this)">Auto-fill</button>
+                    </div>
                 </div>
-              `);
-          }
-      });
+            `;
+        } else if (type === 'education') {
+            html = `
+                <div class="dynamic-fields">
+                    <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                    <div class="input-group">
+                        <div class="form-field"><label>School Name</label><input type="text" name="school[]" placeholder="School/Institution Name" required></div>
+                        <div class="form-field"><label>**Level**</label>
+                            <select name="level[]" class="level-select" onchange="autoFillQualification(this)">
+                                <option value="">Select Level</option>
+                                <option value="High School">High School</option>
+                                <option value="College">College</option>
+                                <option value="University">University</option>
+                                <option value="Vocational">Vocational</option>
+                                <option value="Primary">Primary</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="form-field"><label>**Qualification (Auto-fills)**</label><input type="text" name="qualification[]" placeholder="Qualification/Course Name" class="qualification-input"></div>
+                        <div class="form-field"><label>Year Completed</label><input type="text" name="year[]" placeholder="e.g., 2023"></div>
+                    </div>
+                </div>
+            `;
+        } else if (type === 'referee') {
+            html = `
+                <div class="dynamic-fields">
+                    <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                    <div class="input-group">
+                        <div class="form-field"><label>Referee Name</label><input type="text" name="referee_name[]" placeholder="Referee Name"></div>
+                        <div class="form-field"><label>Referee Contact</label><input type="text" name="referee_contact[]" placeholder="Email or Phone"></div>
+                    </div>
+                </div>
+            `;
+        } else if (type === 'certification') {
+            html = `
+                <div class="dynamic-fields">
+                    <button type="button" class="remove-btn" onclick="removeDynamicField(this)">✕</button>
+                    <div class="input-group">
+                        <div class="form-field"><label>Certificate Name</label><input type="text" name="cert_name[]" placeholder="e.g., Google Project Management"></div>
+                        <div class="form-field"><label>Issuing Organization</label><input type="text" name="cert_org[]" placeholder="e.g., Coursera/Google"></div>
+                    </div>
+                    <div class="input-group">
+                        <div class="form-field"><label>Year Achieved</label><input type="text" name="cert_year[]" placeholder="e.g., 2024"></div>
+                    </div>
+                </div>
+            `;
+        }
+        return html;
+    }
 
-      // Update Experience Section
-      const experienceContainer = document.getElementById('cv-experience');
-      experienceContainer.innerHTML = '';
-      const companyInputs = document.querySelectorAll('input[name="company[]"]');
-      companyInputs.forEach((input, index) => {
-          const position = document.querySelectorAll('input[name="position[]"]')[index].value;
-          const responsibilities = document.querySelectorAll('textarea[name="responsibilities[]"]')[index].value;
-          const exp_year = document.querySelectorAll('input[name="exp_year[]"]')[index].value;
+    function addExperience(save = true) {
+        document.getElementById("experienceFields").insertAdjacentHTML('beforeend', createDynamicFieldHTML('experience'));
+        if (save) saveToLocalStorage();
+    }
+    
+    function addEducation(save = true) {
+        document.getElementById("educationFields").insertAdjacentHTML('beforeend', createDynamicFieldHTML('education'));
+        if (save) saveToLocalStorage();
+    }
+    
+    function addReferee(save = true) {
+        document.getElementById("refereeFields").insertAdjacentHTML('beforeend', createDynamicFieldHTML('referee'));
+        if (save) saveToLocalStorage();
+    }
+    
+    function addCertification(save = true) {
+        document.getElementById("certificationFields").insertAdjacentHTML('beforeend', createDynamicFieldHTML('certification'));
+        if (save) saveToLocalStorage();
+    }
 
-          if (input.value) {
-              const responsibilitiesList = responsibilities.split('\n').map(line => `<li>${line.trim()}</li>`).join('');
-              experienceContainer.insertAdjacentHTML('beforeend', `
-                <p><strong>${position}</strong> – ${input.value} (${exp_year})</p>
-                <ul class="responsibility-list">
-                  ${responsibilitiesList}
-                </ul>
-              `);
-          }
-      });
+    function removeDynamicField(btn) {
+        btn.closest('.dynamic-fields').remove();
+        saveToLocalStorage();
+    }
+    
+    function clearAllData() {
+        if (confirm("Are you sure you want to clear ALL CV data? This action cannot be undone.")) {
+            localStorage.removeItem('smartCvData');
+            CV_FORM.reset(); 
+            
+            const sections = ['experience', 'education', 'referee', 'certification'];
+            sections.forEach(section => {
+                const container = document.getElementById(section + 'Fields');
+                const fields = container.querySelectorAll('.dynamic-fields');
+                fields.forEach((field, index) => {
+                    if (index > 0) field.remove();
+                    else field.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+                });
+            });
 
-      // Update Referees Section
-      const refereeContainer = document.getElementById('cv-referees');
-      refereeContainer.innerHTML = '';
-      const refereeNames = document.querySelectorAll('input[name="referee_name[]"]');
-      refereeNames.forEach((input, index) => {
-          const contact = document.querySelectorAll('input[name="referee_contact[]"]')[index].value;
-          if (input.value) {
-              refereeContainer.insertAdjacentHTML('beforeend', `
-                <p><strong>${input.value}</strong> — ${contact}</p>
-              `);
-          }
-      });
+            document.getElementById("skills").value = DEFAULT_SKILLS;
+            document.getElementById("hobbies").value = AUTOFILL_HOBBIES;
+            
+            showForm();
+            
+            saveToLocalStorage();
+        }
+    }
 
-      // Show the CV and hide the form
-      document.getElementById('form-container').style.display = 'none';
-      document.getElementById('cv-output').style.display = 'block';
+
+    // --- VIEW SWITCHING ---
+
+    function showCV() {
+        document.getElementById('cv-form-container').style.display = 'none';
+        document.getElementById('cv-output').style.display = 'block';
+        window.scrollTo(0, 0); 
     }
 
     function showForm() {
-      document.getElementById('form-container').style.display = 'block';
-      document.getElementById('cv-output').style.display = 'none';
+        document.getElementById('cv-form-container').style.display = 'block';
+        document.getElementById('cv-output').style.display = 'none';
+        window.scrollTo(0, 0); 
+    }
+    
+    // --- CV RENDERER ---
+
+    function generateCV() {
+        // 1. Ensure auto-fill logic runs one last time before saving and rendering
+        autofillMissingFields(); 
+        saveToLocalStorage(); 
+        
+        // 2. Get the final data
+        const data = getFormDataAsObject();
+        const CV = document.getElementById('cv-document');
+        
+        CV.className = `cv-document`;
+
+        // 3. Render content
+        
+        // --- Contact Info ---
+        const personalInfoHtml = `
+            ${data.email ? `<span><i class="fas fa-envelope"></i> Email: ${data.email}</span>` : ''}
+            ${data.phone ? `<span><i class="fas fa-phone"></i> Phone: ${data.phone}</span>` : ''}
+            ${data.address ? `<span><i class="fas fa-map-marker-alt"></i> Address: ${toTitleCase(data.address)}</span>` : ''}
+            ${data.linkedin ? `<span><i class="fab fa-linkedin"></i> LinkedIn: <a href="${data.linkedin}" target="_blank">${data.linkedin.replace(/(https?:\/\/(www\.)?linkedin\.com\/in\/|\/)/g, '')}</a></span>` : ''}
+        `;
+        
+        // --- Personal Details ---
+        const detailInfoHtml = `
+            ${data.nationality ? `<span><i class="fas fa-globe"></i> Nationality: ${toTitleCase(data.nationality)}</span>` : ''}
+            ${data.dob ? `<span><i class="fas fa-birthday-cake"></i> Date of Birth: ${data.dob}</span>` : ''}
+            ${data.id_number ? `<span><i class="fas fa-id-card"></i> ID Number: ${data.id_number}</span>` : ''}
+            ${data.gender ? `<span><i class="fas fa-venus-mars"></i> Gender: ${toTitleCase(data.gender)}</span>` : ''}
+        `;
+
+        const skillsArray = data.skills ? data.skills.split(',').map(s => s.trim()).filter(s => s) : [];
+        const skillsHtml = skillsArray.map(skill => `<li>${toTitleCase(skill)}</li>`).join('');
+        
+        const experienceHtml = data.company.map((company, i) => {
+            if (!company) return '';
+            const start = data.exp_start_year[i] || '';
+            const end = data.exp_end_year[i] || '';
+            const years = (start || end) ? `${start}${start && end ? ' - ' : ''}${end}` : '';
+            const responsibilities = (data.responsibilities[i] || '').split('\n').map(line => line.trim()).filter(l => l);
+            const respList = responsibilities.map(resp => `<li>${resp}</li>`).join('');
+
+            return `
+                <div class="experience-entry">
+                    <div class="company-row">
+                        <span class="company-name">${toTitleCase(company)}</span>
+                    </div>
+                    ${data.position[i] ? `<div class="position"><strong>Position:</strong> ${toTitleCase(data.position[i])}</div>` : ''}
+                    ${years ? `<div class="duration"><strong>Duration:</strong> ${years}</div>` : ''}
+                    ${respList ? `<div class="duties-heading">Duties & Responsibilities</div><ul class="responsibility-list">${respList}</ul>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        
+        function formatQualification(q) {
+            if (!q) return '';
+            return q.replace(/\b(kcpe|kcse)\b/gi, m => m.toUpperCase());
+        }
+
+        const educationHtml = data.school.map((school, i) => {
+            if (!school) return '';
+            const year = data.year[i] ? data.year[i] : '';
+            const qualification = formatQualification(data.qualification[i]);
+            return `
+                <div class="education-entry">
+                    <div class="school-row">
+                        <span class="school-name">${toTitleCase(school)}${data.level[i] ? ' (' + toTitleCase(data.level[i]) + ')' : ''}</span>
+                    </div>
+                    ${qualification ? `<div class="qualification">${qualification}</div>` : ''}
+                    ${year ? `<div class="year-completed"><strong>Year completed:</strong> ${year}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+        
+        const certificationHtml = data.cert_name.map((name, i) => {
+            if (!name) return '';
+            return `
+                <div class="certification-entry">
+                    <span class="item-title">${toTitleCase(name)}</span>
+                    <span class="item-subtitle">${toTitleCase(data.cert_org[i])} (${data.cert_year[i]})</span>
+                </div>
+            `;
+        }).join('');
+
+        const refereeHtml = data.referee_name.map((name, i) => {
+            if (!name) return '';
+            return `
+                <div class="referee-entry">
+                    <span class="item-title">${toTitleCase(name)}</span>
+                    <span class="referee-contact">${data.referee_contact[i]}</span>
+                </div>
+            `;
+        }).join('');
+        
+        const currentYear = new Date().getFullYear();
+        
+        let htmlContent = `
+            <div class="cv-name-section">
+                <h1>${data.first_name.toUpperCase()} ${data.last_name.toUpperCase()}</h1>
+            </div>
+            
+            <div class="section personal-info-section">
+                <div class="personal-info">${personalInfoHtml}</div>
+                <div class="personal-info" style="margin-top: 5px; border-bottom: 2px solid var(--color-medium-gray);">${detailInfoHtml}</div>
+            </div>
+
+            ${data.summary ? `
+                <div class="section summary-section">
+                    <h3><i class="fas fa-user-tie"></i> Professional Summary</h3>
+                    <p class="summary-text">${data.summary.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                </div>
+            ` : ''}
+            
+            ${experienceHtml ? `
+                <div class="section experience-section">
+                    <h3><i class="fas fa-briefcase"></i> Work Experience</h3>
+                    <div>${experienceHtml}</div>
+                </div>
+            ` : ''}
+            
+            ${educationHtml ? `
+                <div class="section education-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                    <div>${educationHtml}</div>
+                </div>
+            ` : ''}
+
+            ${skillsHtml ? `
+                <div class="section skills-section">
+                    <h3><i class="fas fa-star"></i> Key Skills</h3>
+                    <ul class="skills-list">${skillsHtml}</ul>
+                </div>
+            ` : ''}
+            
+            ${certificationHtml ? `
+                <div class="section certification-section">
+                    <h3><i class="fas fa-certificate"></i> Certifications</h3>
+                    <div>${certificationHtml}</div>
+                </div>
+            ` : ''}
+            
+            ${data.hobbies ? `
+                <div class="section hobbies-section">
+                    <h3><i class="fas fa-heart"></i> Hobbies</h3>
+                    <p class="hobbies-text">${toTitleCase(data.hobbies)}</p>
+                </div>
+            ` : ''}
+
+            ${refereeHtml ? `
+                <div class="section referees-section">
+                    <h3><i class="fas fa-handshake"></i> Referees</h3>
+                    <div>${refereeHtml}</div>
+                </div>
+            ` : ''}
+            
+            <p class="footer-text">© ${currentYear} Orlantech Innovations. All rights reserved.</p>
+
+        `;
+
+        CV.innerHTML = htmlContent;
+
+        // 4. Show the CV and hide the form
+        showCV();
     }
 
-  </script>
+
+    // --- INITIALIZATION ---
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add change/input listeners to save data as user types
+        const allInputs = document.querySelectorAll('#cv-form input, #cv-form textarea, #cv-form select');
+        allInputs.forEach(input => {
+            input.addEventListener('input', saveToLocalStorage);
+            input.addEventListener('change', saveToLocalStorage); // For selects and date types
+        });
+
+        // Load data, which also triggers initial autofills if needed
+        loadFromLocalStorage(); 
+
+        // Ensure default fields exist if local storage was empty
+        if (document.getElementById("experienceFields").children.length === 0) addExperience(false);
+        if (document.getElementById("educationFields").children.length === 0) addEducation(false);
+        if (document.getElementById("refereeFields").children.length === 0) addReferee(false);
+        if (document.getElementById("certificationFields").children.length === 0) addCertification(false);
+
+        // Hide output by default (important if local storage loaded data)
+        showForm();
+    });
+
+</script>
 </body>
 </html>
